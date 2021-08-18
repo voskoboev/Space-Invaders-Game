@@ -1,12 +1,22 @@
 body {
+  font-family: Arial, Helvetica, sans-serif;
   display: flex;
   justify-content: center;
-  padding-top: 100px;
+  padding-top: 30px;
+  align-items: center;
+  flex-direction: column;
+}
+
+.result {
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-weight: 700;
+  height: 20px;
 }
 
 .field {
-  width: 300px;
-  height: 300px;
+  width: 600px;
+  height: 600px;
   border: 1px solid #000;
 
   display: flex;
@@ -14,11 +24,15 @@ body {
 }
 
 .section {
-  width: 20px;
-  height: 20px;
-  outline: 1px solid black
+  width: 40px;
+  height: 40px;
+  outline: 1px solid black;
 }
 
 .invader {
   background-color: red;
+}
+
+.shooter {
+  background-color: purple;
 }
