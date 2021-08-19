@@ -30,9 +30,17 @@ body {
 }
 
 .invader {
-  background-color: red;
+  background-color: green;
 }
 
 .shooter {
   background-color: purple;
+}
+
+.laser {
+  background-color: orange;
+}
+
+.boom {
+  background-color: red;
 }

@@ -106,14 +106,51 @@ const moveInvaders = () => {
     && sections[currentShooterIndex].classList.contains('shooter')
   ) {
     clearInterval(invadersId)
+
     result.innerHTML = 'game over'
   }
 
-  for (let i =0; i < invaders.length; i++) {
+  for (let i = 0; i < invaders.length; i++) { // ?
     if (invaders[i] > sections.length) {
-      
+      clearInterval(invadersId) // ?
+
+      result.innerHTML = 'game over' // ?
     }
   }
 }
 
-invadersId = setInterval(moveInvaders, 20)
+invadersId = setInterval(moveInvaders, 50)
+
+const shoot = (ev: KeyboardEvent): void => {
+  let laserId: number
+  let currentLaserIndex: number = currentShooterIndex
+
+  const moveLaser = (): void => {
+    sections[currentLaserIndex].classList.remove('laser')
+
+    currentLaserIndex -= width
+
+    sections[currentLaserIndex].classList.add('laser')
+
+    if (sections[currentLaserIndex].classList.contains('invader')) {
+      sections[currentLaserIndex].classList.remove('laser')
+      sections[currentLaserIndex].classList.remove('invader')
+      sections[currentLaserIndex].classList.add('boom')
+
+      setTimeout(() => sections[currentLaserIndex].classList.remove('boom'), 100)
+      clearInterval(laserId)
+
+      const alianRemoval = invaders.indexOf(currentLaserIndex) 
+
+      invaders
+    }
+
+  }
+
+  switch (ev.key) {
+    case 'ArrowUp':
+      laserId = setInterval(moveLaser, 10)
+  }
+}
+
+document.addEventListener('keydown', shoot)
