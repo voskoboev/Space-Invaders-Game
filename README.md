@@ -4,7 +4,7 @@
 
 - Browser-based implementation of the classic video game 'Space Invaders';
 - Typescript, Vanilla CSS, Parcel;
-- [Hosted Site]().
+- [Hosted Site](https://space-invaders-browser-game.netlify.app).
 
 ### Get started
 
