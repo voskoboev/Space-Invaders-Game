@@ -1,46 +1,88 @@
 body {
-  font-family: Arial, Helvetica, sans-serif;
   display: flex;
-  justify-content: center;
-  padding-top: 30px;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.rules {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.rules-title {
+  text-align: center;
+}
+
+.rules-list {
+  padding-left: 15px;
+  margin: 0;
 }
 
 .result {
-  margin-bottom: 20px;
+  height: 20px;
+  margin-bottom: 30px;
   text-transform: uppercase;
   font-weight: 700;
-  height: 20px;
 }
 
 .field {
-  width: 600px;
-  height: 600px;
-  border: 1px solid #000;
-
   display: flex;
   flex-wrap: wrap;
+  width: 600px;
+  height: 600px;
+  border: 1px solid #d9d9d9;
+  border-radius: 20px;
+  padding: 10px;
+  margin: 20px;
 }
 
 .section {
   width: 40px;
   height: 40px;
-  outline: 1px solid black;
 }
 
-.invader {
-  background-color: green;
+.invader::after,
+.shooter::after,
+.laser::after,
+.explosion::after {
+  position: relative;
+  left: 4px;
+  width: 32px;
+  height: 32px;
 }
 
-.shooter {
-  background-color: purple;
+.invader::after {
+  content: url("./img/invader.png");
 }
 
-.laser {
-  background-color: orange;
+.shooter::after {
+  content: url("./img/spaceship.png");
 }
 
-.boom {
-  background-color: red;
+.laser::after {
+  content: url("./img/laser.png");
+  left: 8px;
+}
+
+.explosion::after {
+  content: url("./img/explosion.png");
+}
+
+.play-again-btn {
+  width: 150px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.play-again-btn:active {
+  background-color: #d9d9d9;
 }

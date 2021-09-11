@@ -1,156 +1,199 @@
+const startBtn: HTMLButtonElement = document.querySelector('.play-again-btn')
 
-const field: HTMLElement = document.querySelector('.field'),
-  result: HTMLElement = document.querySelector('.result'),
-  score: HTMLElement = document.querySelector('.score')
+const startGame = (): void => {
+  const field: HTMLDivElement = document.querySelector('.field'),
+    result: HTMLHeadingElement = document.querySelector('.result'),
+    score: HTMLDivElement = document.querySelector('.score')
 
-let currentShooterIndex: number = 202,
-  width: number = 15,
-  direction: number = 1,
-  invadersId: number,
-  goingRight: boolean = true,
-  results: any = 0
+  let currentShooterIndex: number = 217,
+    width: number = 15,
+    direction: number = 1,
+    invadersId: number,
+    movingRight: boolean = true,
+    results: any = 0,
+    invadersMovingTime: number = 350,
+    explosionDisplayTime: number = 100,
+    laserMovingTime: number = 50
 
-const removedInvadersArr: number[] = []
+  result.innerHTML = ''
+  score.innerHTML = '0'
 
-for (let i = 0; i < 225; i++) {
-  const elemSection: HTMLElement = document.createElement('div')
-  elemSection.classList.add('section')
+  const removedInvadersArr: number[] = []
 
-  field.appendChild(elemSection)
-  elemSection.textContent = `${i}`
-}
+  for (let i = 0; i < 225; i++) {
+    const elemSection: HTMLElement = document.createElement('div')
+    elemSection.classList.add('section')
 
-const sections: NodeListOf<Element> = document.querySelectorAll('.section')
-const sectionsArr: Element[] = Array.from(sections)
-const invaders: number[] = []
-
-for (let i = 0; i <= 39; i++) {
-  if (i <= 9 || (i >= 15 && i <= 24) || i >= 30) {
-    invaders.push(i)
+    field.appendChild(elemSection)
   }
-}
 
-const draw = (): void => {
-  for (let i = 0; i < invaders.length; i++) {
-    if (!removedInvadersArr.includes(i)) {
-      sectionsArr[invaders[i]].classList.add('invader')
+  const sections: NodeListOf<Element> = document.querySelectorAll('.section'),
+    sectionsArr: Element[] = Array.from(sections),
+    invaders: number[] = []
+
+  for (let i = 0; i <= 39; i++) {
+    if (i <= 9 || (i >= 15 && i <= 24) || i >= 30) {
+      invaders.push(i)
     }
   }
-}
 
-const remove = (): void => {
-  invaders.forEach(i => {
-    sectionsArr[i].classList.remove('invader')
-  })
-}
-
-sections[currentShooterIndex].classList.add('shooter')
-
-const moveShooter = (ev: KeyboardEvent): void => {
-  sections[currentShooterIndex].classList.remove('shooter')
-
-  if (ev.key === 'ArrowLeft') {
-    if (currentShooterIndex % width !== 0) currentShooterIndex -= 1
+  const displayInvasers = (): void => {
+    for (let i = 0; i < invaders.length; i++) {
+      if (!removedInvadersArr.includes(i)) {
+        if (sectionsArr[invaders[i]] === undefined) {
+          return
+        } else {
+          sectionsArr[invaders[i]].classList.add('invader')
+        }
+      }
+    }
   }
 
-  if (ev.key === 'ArrowRight') {
-    if (currentShooterIndex % width < width - 1) currentShooterIndex += 1
+  const removeIvasers = (): void => {
+    invaders.forEach(i => {
+      if (sectionsArr[i] === undefined) {
+        return
+      } else {
+        sectionsArr[i].classList.remove('invader')
+      }
+    })
   }
 
   sections[currentShooterIndex].classList.add('shooter')
-}
 
-document.addEventListener('keydown', moveShooter)
+  const moveShooter = (ev: KeyboardEvent): void => {
+    sections[currentShooterIndex].classList.remove('shooter')
 
-const moveInvaders = (): void => {
-  const leftEdge: boolean = invaders[0] % width === 0
-  const rightEdge: boolean = invaders[invaders.length - 1] % width === width - 1
+    if (ev.key === 'ArrowLeft') {
+      if (currentShooterIndex % width !== 0) currentShooterIndex -= 1
+    }
 
-  remove()
+    if (ev.key === 'ArrowRight') {
+      if (currentShooterIndex % width < width - 1) currentShooterIndex += 1
+    }
 
-  if (rightEdge && goingRight) {
+    sections[currentShooterIndex].classList.add('shooter')
+  }
+
+  document.addEventListener('keydown', moveShooter)
+
+  const removeListeners = (): void => {
+    document.removeEventListener('keydown', moveShooter)
+    document.removeEventListener('keydown', shoot)
+  }
+
+  const removeSections = (): void => {
+    field.innerHTML = ''
+  }
+
+  const moveInvaders = (): void => {
+    const leftEdge: boolean = invaders[0] % width === 0
+    const rightEdge: boolean = invaders[invaders.length - 1] % width === width - 1
+
+    removeIvasers()
+
+    if (rightEdge && movingRight) {
+      for (let i = 0; i < invaders.length; i++) {
+        invaders[i] += width + 1
+        direction = -1
+
+        movingRight = false
+      }
+    }
+
+    if (leftEdge && !movingRight) {
+      for (let i = 0; i < invaders.length; i++) {
+        invaders[i] += width - 1
+        direction = 1
+
+        movingRight = true
+      }
+    }
+
     for (let i = 0; i < invaders.length; i++) {
-      invaders[i] += width + 1
-      direction = -1
-
-      goingRight = false
+      invaders[i] += direction
     }
-  }
 
-  if (leftEdge && !goingRight) {
+    displayInvasers()
+
+    if (sections[currentShooterIndex].classList.contains('invader')
+      && sections[currentShooterIndex].classList.contains('shooter')
+    ) {
+      clearInterval(invadersId)
+
+      result.innerHTML = 'Game over'
+
+      removeListeners()
+      removeSections()
+    }
+
     for (let i = 0; i < invaders.length; i++) {
-      invaders[i] += width - 1
-      direction = 1
+      if (invaders[i] > sections.length) {
+        clearInterval(invadersId)
 
-      goingRight = true
+        result.innerHTML = 'Game over'
+
+        removeListeners()
+        removeSections()
+      }
+    }
+
+    if (removedInvadersArr.length === invaders.length) {
+      clearInterval(invadersId)
+
+      result.innerHTML = 'You win'
+
+      removeListeners()
+      removeSections()
     }
   }
 
-  for (let i = 0; i < invaders.length; i++) {
-    invaders[i] += direction
-  }
+  invadersId = setInterval(moveInvaders, invadersMovingTime)
 
-  draw()
+  const shoot = (ev: KeyboardEvent): void => {
+    let laserId: number
+    let currentLaserIndex: number = currentShooterIndex
 
-  if (sections[currentShooterIndex].classList.contains('invader') // заменить переменной
-    && sections[currentShooterIndex].classList.contains('shooter')
-  ) {
-    clearInterval(invadersId)
+    const moveLaser = (): void => {
+      if (sections[currentLaserIndex] === undefined) {
+        return
+      } else {
+        sections[currentLaserIndex].classList.remove('laser')
+      }
 
-    result.innerHTML = 'game over'
-  }
+      currentLaserIndex -= width
 
-  for (let i = 0; i < invaders.length; i++) { // ?
-    if (invaders[i] > sections.length) {
-      clearInterval(invadersId) // ?
+      sections[currentLaserIndex].classList.add('laser')
 
-      result.innerHTML = 'game over' // ?
+      if (sections[currentLaserIndex].classList.contains('invader')) {
+        sections[currentLaserIndex].classList.remove('laser')
+        sections[currentLaserIndex].classList.remove('invader')
+        sections[currentLaserIndex].classList.add('explosion')
+
+        setTimeout(() => sections[currentLaserIndex].classList.remove('explosion'), explosionDisplayTime)
+
+        clearInterval(laserId)
+
+        const removedInvader: number = invaders.indexOf(currentLaserIndex)
+
+        removedInvadersArr.push(removedInvader)
+
+        results++
+
+        score.textContent = results
+      }
+    }
+
+    if (ev.key === 'ArrowUp') {
+      laserId = setInterval(moveLaser, laserMovingTime)
     }
   }
 
-  if (removedInvadersArr.length === invaders.length) {
-    clearInterval(invadersId)
-
-    result.innerHTML = 'win'
-  }
+  document.addEventListener('keydown', shoot)
 }
 
-invadersId = setInterval(moveInvaders, 50)
+startBtn.addEventListener('click', startGame)
 
-const shoot = (ev: KeyboardEvent): void => {
-  let laserId: number
-  let currentLaserIndex: number = currentShooterIndex
-
-  const moveLaser = (): void => {
-    sections[currentLaserIndex].classList.remove('laser')
-
-    currentLaserIndex -= width
-
-    sections[currentLaserIndex].classList.add('laser')
-
-    if (sections[currentLaserIndex].classList.contains('invader')) {
-      sections[currentLaserIndex].classList.remove('laser')
-      sections[currentLaserIndex].classList.remove('invader')
-      sections[currentLaserIndex].classList.add('boom')
-
-      setTimeout(() => sections[currentLaserIndex].classList.remove('boom'), 100)
-
-      clearInterval(laserId)
-
-      const removedInvader: number = invaders.indexOf(currentLaserIndex)
-
-      removedInvadersArr.push(removedInvader)
-
-      results++
-
-      score.textContent = results
-    }
-  }
-
-  if (ev.key === 'ArrowUp') {
-    laserId = setInterval(moveLaser, 10)
-  }
-
-}
-
-document.addEventListener('keydown', shoot)
+document.addEventListener('keydown', ev => {
+  if (ev.key === 'Enter') startGame()
+})

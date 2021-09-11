@@ -5,13 +5,52 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="./img/invader-icon32.png">
+  <title>Space Invaders</title>
   <link rel="stylesheet" href="index.css">
-  <script src="./index.ts" defer></script>
+  <script src="./index.ts" type="module"></script>
 </head>
+
 <body>
-  <div class="result"></div>
-  <div class="score"></div>
-  <div class="field"></div>
+  <div class="rules">
+    <h3 class="rules-title">Rules</h3>
+    <ul class="rules-list">
+      <li>
+        <p>
+          Press 'Enter' or click 'Start' to start the game
+        </p>
+      </li>
+      <li>
+        <p>
+          Move on 'Left' and 'Right' arrows 
+        </p>
+      </li>
+      <li>
+        <p>
+          Shoot on 'Up' arrow
+        </p>
+      </li>
+      <li>
+        <p>
+          If invaders reach you, you will lose
+        </p>
+      </li>
+      <li>
+        <p>
+          If you destroy all invaders, you will win
+        </p>
+      </li>
+    </ul>
+  </div>
+  <h1 class="result"></h1>
+  <div class="info">
+    Score: <span class="score">0</span><span> / 30</span>
+  </div>
+  <div class="field">
+  </div>
+  <button class="play-again-btn">
+   Start
+  </button>
 </body>
+
 </html>
