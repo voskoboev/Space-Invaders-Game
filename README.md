@@ -6,11 +6,11 @@
 - Typescript, Vanilla CSS, Parcel;
 - [Hosted Site](https://space-invaders-browser-game.netlify.app).
 
-### Get started
+### Get started:
 
 Insert console command 'npm run dev'.
 
-### Functionality
+### Functionality:
 
 - Press 'Enter' or click UI 'Start' button to start the game;
 - Move on 'Left' and 'Right' arrows;

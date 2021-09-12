@@ -1,6 +1,18 @@
 const startBtn: HTMLButtonElement = document.querySelector('.play-again-btn')
 
+const startGameByPressEnter = (ev: KeyboardEvent): void => {
+  if (ev.key === 'Enter') startGame()
+}
+
+const insertEventListeners = (): void => {
+  startBtn.addEventListener('click', startGame)
+  document.addEventListener('keydown', startGameByPressEnter)
+}
+
 const startGame = (): void => {
+  startBtn.removeEventListener('click', startGame)
+  document.removeEventListener('keydown', startGameByPressEnter)
+
   const field: HTMLDivElement = document.querySelector('.field'),
     result: HTMLHeadingElement = document.querySelector('.result'),
     score: HTMLDivElement = document.querySelector('.score')
@@ -51,11 +63,7 @@ const startGame = (): void => {
 
   const removeIvasers = (): void => {
     invaders.forEach(i => {
-      if (sectionsArr[i] === undefined) {
-        return
-      } else {
-        sectionsArr[i].classList.remove('invader')
-      }
+      sectionsArr[i].classList.remove('invader')
     })
   }
 
@@ -125,6 +133,7 @@ const startGame = (): void => {
 
       removeListeners()
       removeSections()
+      insertEventListeners()
     }
 
     for (let i = 0; i < invaders.length; i++) {
@@ -135,6 +144,7 @@ const startGame = (): void => {
 
         removeListeners()
         removeSections()
+        insertEventListeners()
       }
     }
 
@@ -145,6 +155,7 @@ const startGame = (): void => {
 
       removeListeners()
       removeSections()
+      insertEventListeners()
     }
   }
 
@@ -163,7 +174,11 @@ const startGame = (): void => {
 
       currentLaserIndex -= width
 
-      sections[currentLaserIndex].classList.add('laser')
+      if (sections[currentLaserIndex] === undefined) {
+        return
+      } else {
+        sections[currentLaserIndex].classList.add('laser')
+      }
 
       if (sections[currentLaserIndex].classList.contains('invader')) {
         sections[currentLaserIndex].classList.remove('laser')
@@ -184,16 +199,10 @@ const startGame = (): void => {
       }
     }
 
-    if (ev.key === 'ArrowUp') {
-      laserId = setInterval(moveLaser, laserMovingTime)
-    }
+    if (ev.key === 'ArrowUp') laserId = setInterval(moveLaser, laserMovingTime)
   }
 
   document.addEventListener('keydown', shoot)
 }
 
-startBtn.addEventListener('click', startGame)
-
-document.addEventListener('keydown', ev => {
-  if (ev.key === 'Enter') startGame()
-})
+insertEventListeners()
