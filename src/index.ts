@@ -4,7 +4,7 @@ const startGameByPressEnter = (ev: KeyboardEvent): void => {
   if (ev.key === 'Enter') startGame()
 }
 
-const insertEventListeners = (): void => {
+const insertGameStartEventListeners = (): void => {
   startBtn.addEventListener('click', startGame)
   document.addEventListener('keydown', startGameByPressEnter)
 }
@@ -49,7 +49,7 @@ const startGame = (): void => {
     }
   }
 
-  const displayInvasers = (): void => {
+  const displayInvaders = (): void => {
     for (let i = 0; i < invaders.length; i++) {
       if (!removedInvadersArr.includes(i)) {
         if (sectionsArr[invaders[i]] === undefined) {
@@ -61,7 +61,7 @@ const startGame = (): void => {
     }
   }
 
-  const removeIvasers = (): void => {
+  const removeInvaders = (): void => {
     invaders.forEach(i => {
       sectionsArr[i].classList.remove('invader')
     })
@@ -85,7 +85,7 @@ const startGame = (): void => {
 
   document.addEventListener('keydown', moveShooter)
 
-  const removeListeners = (): void => {
+  const removeShootingEventListeners = (): void => {
     document.removeEventListener('keydown', moveShooter)
     document.removeEventListener('keydown', shoot)
   }
@@ -98,7 +98,7 @@ const startGame = (): void => {
     const leftEdge: boolean = invaders[0] % width === 0
     const rightEdge: boolean = invaders[invaders.length - 1] % width === width - 1
 
-    removeIvasers()
+    removeInvaders()
 
     if (rightEdge && movingRight) {
       for (let i = 0; i < invaders.length; i++) {
@@ -122,7 +122,7 @@ const startGame = (): void => {
       invaders[i] += direction
     }
 
-    displayInvasers()
+    displayInvaders()
 
     if (sections[currentShooterIndex].classList.contains('invader')
       && sections[currentShooterIndex].classList.contains('shooter')
@@ -131,9 +131,9 @@ const startGame = (): void => {
 
       result.innerHTML = 'Game over'
 
-      removeListeners()
       removeSections()
-      insertEventListeners()
+      removeShootingEventListeners()
+      insertGameStartEventListeners()
     }
 
     for (let i = 0; i < invaders.length; i++) {
@@ -142,9 +142,9 @@ const startGame = (): void => {
 
         result.innerHTML = 'Game over'
 
-        removeListeners()
         removeSections()
-        insertEventListeners()
+        removeShootingEventListeners()
+        insertGameStartEventListeners()
       }
     }
 
@@ -153,9 +153,9 @@ const startGame = (): void => {
 
       result.innerHTML = 'You win'
 
-      removeListeners()
       removeSections()
-      insertEventListeners()
+      removeShootingEventListeners()
+      insertGameStartEventListeners()
     }
   }
 
@@ -205,4 +205,4 @@ const startGame = (): void => {
   document.addEventListener('keydown', shoot)
 }
 
-insertEventListeners()
+insertGameStartEventListeners()
